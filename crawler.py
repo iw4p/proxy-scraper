@@ -1,38 +1,44 @@
-from urllib.request import Request, urlopen
-from bs4 import BeautifulSoup
-from fake_useragent import UserAgent
-import random
-import threading 
+import asyncio
+import sys
+sys.argv
+import aiohttp
 
+proxy_type = "http"
+test_url = "http://www.google.com" # URL
+timeout = 5
+tasks = []
+loop = asyncio.get_event_loop()
 
-ua = UserAgent(verify_ssl=False)
-proxies = [] # Will contain proxies [ip, port]
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
-# Main function
-def main():
+file = 'proxy_list.txt'
+proxylistfile = open(file)
+proxyList = proxylistfile.read().splitlines()
 
-  # Retrieve latest proxies
-  proxies_req = Request('https://www.sslproxies.org/')
-  proxies_req.add_header('User-Agent', ua.random)
-  proxies_doc = urlopen(proxies_req).read().decode('utf8')
+async def main(ipport):
+    try:
+        session = aiohttp.ClientSession()
+        r = await session.get(test_url, proxy=ipport, timeout=timeout)
+        if not r.headers["Via"]:
+            raise "Error"
+        print(bcolors.OKBLUE + "Working:", ipport + bcolors.ENDC)
+        session.close()
+    except:
+        session.close()
+        print(bcolors.FAIL + "Not Working:", ipport + bcolors.ENDC)
 
-  soup = BeautifulSoup(proxies_doc, 'html.parser')
-  proxies_table = soup.find(id='proxylisttable')
+for item in proxyList:
+    tasks.append(asyncio.ensure_future(main("http://" + item + "/")))
 
-  # Save proxies in the array
-  for row in proxies_table.tbody.find_all('tr'):
-    proxies.append({
-      'ip':   row.find_all('td')[0].string,
-      'port': row.find_all('td')[1].string
-    })
-
-  for row in proxies_table.tbody.find_all('tr'):
-    print(row.find_all('td')[0].string + ":" + row.find_all('td')[1].string)
- 
-
-
-
-if __name__ == '__main__':
-  main()
-
-  
+print(bcolors.HEADER + "Now checking... \n" + bcolors.ENDC)
+loop.run_until_complete(asyncio.wait(tasks))
+print(bcolors.HEADER + "Finished." + bcolors.ENDC)
+loop.close()

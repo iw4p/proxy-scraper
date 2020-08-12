@@ -4,10 +4,10 @@ Grab and check more than 600 proxies in less than 20 seconds.
 
 Grabbing fresh public proxies from 4 different sources:
 
-[sslproxies.org](http://sslproxies.org)
-[free-proxy-list.net](http://free-proxy-list.net)
-[us-proxy.org](http://us-proxy.org)
-[socks-proxy.net](http://socks-proxy.net)
+* [sslproxies.org](http://sslproxies.org)
+* [free-proxy-list.net](http://free-proxy-list.net)
+* [us-proxy.org](http://us-proxy.org)
+* [socks-proxy.net](http://socks-proxy.net)
 
 
 ## Installation

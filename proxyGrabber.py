@@ -36,5 +36,6 @@ if __name__ == "__main__":
     for url in urls:
         new_proxies = scrapeproxies(url)
         proxies.update(new_proxies)
-
-    print ("Proxies:" + str(proxies))
+        with open("output.txt", "w") as txt_file:
+            for line in proxies:
+                txt_file.write("".join(line) + "\n")

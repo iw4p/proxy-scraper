@@ -41,5 +41,9 @@ Dead proxies will be removed and just alive proxies will stay.
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+## Credit
+[Proxy Scrapper](https://github.com/Abigdog4/ProxyScrapper/)
+[Proxy Checker](https://github.com/byRo0t96/proxy_checker)
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

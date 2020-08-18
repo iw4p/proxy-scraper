@@ -1,8 +1,8 @@
-# Proxy grabber and checker 
+# Proxy scraper and checker 
 
-Grab and check more than 600 proxies in less than 20 seconds.
+Scrape and check more than 600 HTTP proxies in less than 20 seconds.
 
-Grabbing fresh public proxies from 4 different sources:
+Scraping fresh public proxies from 4 different sources:
 
 * [sslproxies.org](http://sslproxies.org)
 * [free-proxy-list.net](http://free-proxy-list.net)
@@ -21,10 +21,10 @@ pip3 install -r requirements.txt
 
 ## Usage
 
-For grabbing:
+For scraping:
 
 ```bash
-python3 proxyGrabber.py
+python3 proxyScraper.py
 ```
 
 The result will be on output.txt on your current directory.
@@ -36,7 +36,7 @@ python3 proxyChecker.py output.txt
 ```
 
 Dead proxies will be removed and just alive proxies will stay.
-
+You can change timeout in proxyChecker.py
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

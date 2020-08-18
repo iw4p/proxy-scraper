@@ -5,6 +5,14 @@ from multiprocessing.pool import ThreadPool
 
 urls = ["http://sslproxies.org", "http://free-proxy-list.net", "http://us-proxy.org", "http://socks-proxy.net"]
 
+# TODO: Add New Source for HTTP, Socks4, Socks5 https://proxyscrape.com/free-proxy-list
+
+def scrapeProxyScrape(proxytype, timeout, country):
+    response = requests.get("https://api.proxyscrape.com/?request=getproxies&proxytype=" + proxytype + "&timeout=" + timeout + "&country=" + country)
+    proxies = response.text
+    return proxies
+
+
 def makesoup(url):
     page=requests.get(url)
     print(url + "  scraped successfully")
@@ -31,7 +39,6 @@ def scrapeproxies(url):
 
 
 if __name__ == "__main__":
-
     proxies = set()
     for url in urls:
         new_proxies = scrapeproxies(url)
@@ -39,3 +46,7 @@ if __name__ == "__main__":
         with open("output.txt", "w") as txt_file:
             for line in proxies:
                 txt_file.write("".join(line) + "\n")
+    text = scrapeProxyScrape("http", "50", "All")
+    print(text)
+    with open("output.txt", "a") as txt_file:
+            txt_file.write(text)

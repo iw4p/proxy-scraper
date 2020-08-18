@@ -3,20 +3,17 @@ from bs4 import BeautifulSoup
 import threading
 import os
 
-# TODO: Add New Source for HTTP, Socks4, Socks5 https://proxyscrape.com/free-proxy-list
-
 pathTextFile = 'output.txt'
 
 def scrapeAPI(proxytype, timeout, country):
     response = requests.get("https://api.proxyscrape.com/?request=getproxies&proxytype=" + proxytype + "&timeout=" + timeout + "&country=" + country)
     proxies = response.text
-    with open("output.txt", "a") as txt_file:
+    with open(pathTextFile, "a") as txt_file:
         txt_file.write(proxies)
 
 
 def makesoup(url):
     page=requests.get(url)
-    print(url + "  scraped successfully")
     return BeautifulSoup(page.text,"html.parser")
 
 def proxyscrape(table):
@@ -39,7 +36,7 @@ def scrapeproxies(url):
     result = proxyscrape(table = soup.find('table', attrs={'id': 'proxylisttable'}))
     proxies = set()
     proxies.update(result)
-    with open("output.txt", "a") as txt_file:
+    with open(pathTextFile, "a") as txt_file:
         for line in proxies:
             print(line)
             txt_file.write("".join(line) + "\n")
@@ -56,6 +53,12 @@ if __name__ == "__main__":
     threading.Thread(target=scrapeproxies, args=('http://sslproxies.org',)).start()
     threading.Thread(target=scrapeproxies, args=('http://free-proxy-list.net',)).start()
     threading.Thread(target=scrapeproxies, args=('http://us-proxy.org',)).start()
-    threading.Thread(target=scrapeproxies, args=('http://socks-proxy.net',)).start()
 
     threading.Thread(target=scrapeAPI, args=('http','1000','All',)).start()
+
+    # TODO: Socks does not support for checker script at this time
+    
+    # threading.Thread(target=scrapeproxies, args=('http://socks-proxy.net',)).start()
+    # threading.Thread(target=scrapeAPI, args=('socks4','1000','All',)).start()
+    # threading.Thread(target=scrapeAPI, args=('socks5','1000','All',)).start()
+

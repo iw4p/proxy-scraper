@@ -3,18 +3,12 @@ import threading
 import random
 import sys
 import os
-
-try:
-    txtfile = sys.argv[1]
-    f = open(txtfile)
-except:
-    print('Usage: python3 proxyChecker.py list.txt')
-    sys.exit()
+import argparse
 
 useragents=('Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')
 
 
-def checkeproxy():
+def checkeproxy(txtfile):
 	global out_file
 	candidate_proxies = open(txtfile).readlines()
 	filedl = open(txtfile, "w")
@@ -30,7 +24,8 @@ def checkeproxy():
 		t.join()
 
 	out_file.close()
-	print("\n\nCurrent IPs in proxylist: %s\n" % (len(open(txtfile).readlines())))
+	if args.verbose:
+		print("\n\nCurrent IPs in proxylist: %s\n" % (len(open(txtfile).readlines())))
 
 def checker(i):
 	proxy = 'http://' + i
@@ -40,10 +35,30 @@ def checker(i):
 	req = urllib.request.Request(("http://www.google.com"))
 	req.add_header("User-Agent", useragents)
 	try:
-		urllib.request.urlopen(req, timeout=20)
-		print ("%s works!\n" % proxy)
+		global chosenTimeout
+		urllib.request.urlopen(req, timeout=chosenTimeout)
 		out_file.write(i)
+		if args.verbose:
+			print ("%s works!\n" % proxy)
 	except:
-		print ("%s does not respond.\n" % proxy)
+		if args.verbose:
+			print ("%s does not respond.\n" % proxy)
 
-checkeproxy()
+
+if __name__ == "__main__":
+
+	global chosenTimeout
+	global txtfile
+
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-t", "--timeout", type=int, help="-t 20")
+	parser.add_argument("-l", "--list", help="-l output.txt")
+	parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
+	args = parser.parse_args()
+
+	chosenTimeout = args.timeout
+	txtfile = args.list
+	
+	checkeproxy(txtfile)
+
+	threading.Thread(target=checkeproxy, args=(txtfile,)).start()

@@ -35,14 +35,16 @@ For checking:
 python3 proxyChecker.py output.txt
 ```
 
-Dead proxies will be removed and just alive proxies will stay.
-You can change timeout in proxyChecker.py
+## Good to know
+* Dead proxies will be removed and just alive proxies will stay.
+* You can change timeout in proxyChecker.py.
+* This script is able to scrape Socks, but proxyChecker only check HTTP proxies.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## Credit
-* [Proxy Scrapper](https://github.com/Abigdog4/ProxyScrapper/)
+* [Proxy Scraper](https://github.com/Abigdog4/ProxyScrapper)
 * [Proxy Checker](https://github.com/byRo0t96/proxy_checker)
 
 ## License

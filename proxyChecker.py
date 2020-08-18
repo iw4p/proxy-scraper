@@ -8,7 +8,7 @@ import argparse
 useragents=('Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')
 
 
-def checkeproxy(txtfile):
+def checkproxy(txtfile):
 	global out_file
 	candidate_proxies = open(txtfile).readlines()
 	filedl = open(txtfile, "w")
@@ -16,6 +16,7 @@ def checkeproxy(txtfile):
 	out_file = open(txtfile, "a")
 	threads = []
 	for i in candidate_proxies:
+		print(i)
 		t = threading.Thread(target=checker, args=[i])
 		t.start()
 		threads.append(t)
@@ -59,6 +60,4 @@ if __name__ == "__main__":
 	chosenTimeout = args.timeout
 	txtfile = args.list
 	
-	checkeproxy(txtfile)
-
-	threading.Thread(target=checkeproxy, args=(txtfile,)).start()
+	threading.Thread(target=checkproxy, args=(txtfile,)).start()

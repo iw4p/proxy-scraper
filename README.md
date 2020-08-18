@@ -32,7 +32,7 @@ The result will be on output.txt on your current directory.
 For checking:
 
 ```bash
-python3 proxyChecker.py output.txt
+python3 proxyChecker.py -t 20 -l output.txt
 ```
 
 ## Good to know

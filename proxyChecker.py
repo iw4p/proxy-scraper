@@ -16,7 +16,6 @@ def checkproxy(txtfile):
 	out_file = open(txtfile, "a")
 	threads = []
 	for i in candidate_proxies:
-		print(i)
 		t = threading.Thread(target=checker, args=[i])
 		t.start()
 		threads.append(t)
@@ -29,11 +28,12 @@ def checkproxy(txtfile):
 		print("\n\nCurrent IPs in proxylist: %s\n" % (len(open(txtfile).readlines())))
 
 def checker(i):
-	proxy = 'http://' + i
-	proxy_support = urllib.request.ProxyHandler({'http' : proxy})
+	proxy = 'https://' + i
+	proxy_support = urllib.request.ProxyHandler({'https' : proxy})
 	opener = urllib.request.build_opener(proxy_support)
 	urllib.request.install_opener(opener)
-	req = urllib.request.Request(("http://www.google.com"))
+	global site
+	req = urllib.request.Request('https://' + site)
 	req.add_header("User-Agent", useragents)
 	try:
 		global chosenTimeout
@@ -50,14 +50,17 @@ if __name__ == "__main__":
 
 	global chosenTimeout
 	global txtfile
+	global site
 
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-t", "--timeout", type=int, help="-t 20")
-	parser.add_argument("-l", "--list", help="-l output.txt")
+	parser.add_argument("-l", "--list", help="path to your list.txt")
+	parser.add_argument("-s", "--site", help="check with specific website like youtube.com")
 	parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
 	args = parser.parse_args()
 
 	chosenTimeout = args.timeout
 	txtfile = args.list
-	
+	site = args.site
+
 	threading.Thread(target=checkproxy, args=(txtfile,)).start()

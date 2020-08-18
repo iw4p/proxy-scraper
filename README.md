@@ -1,6 +1,6 @@
 # Proxy scraper and checker 
 
-Scrape and check more than 600 HTTP proxies in less than 20 seconds.
+Scrape more than 1K HTTP proxies in less than 2 seconds.
 
 Scraping fresh public proxies from 4 different sources:
 
@@ -32,7 +32,7 @@ The result will be in output.txt on your current directory.
 For checking:
 
 ```bash
-python3 proxyChecker.py -t 20 -l output.txt
+python3 proxyChecker.py -t 20 -s google.com -l output.txt
 ```
 
 ## Good to know

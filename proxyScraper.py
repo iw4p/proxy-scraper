@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import threading
 import os
+import asyncio
+
 
 pathTextFile = 'output.txt'
 

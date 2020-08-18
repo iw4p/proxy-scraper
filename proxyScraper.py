@@ -1,7 +1,8 @@
-import csv
 import requests
 from bs4 import BeautifulSoup
-from multiprocessing.pool import ThreadPool
+import threading
+import os
+
 
 urls = ["http://sslproxies.org", "http://free-proxy-list.net", "http://us-proxy.org", "http://socks-proxy.net"]
 
@@ -35,18 +36,39 @@ def proxyscrape(table):
 
 def scrapeproxies(url):
     soup=makesoup(url)
-    return proxyscrape(table = soup.find('table', attrs={'id': 'proxylisttable'}))
+    result = proxyscrape(table = soup.find('table', attrs={'id': 'proxylisttable'}))
+    proxies = set()
+    proxies.update(result)
+    with open("output.txt", "a") as txt_file:
+        for line in proxies:
+            print(line)
+            txt_file.write("".join(line) + "\n")
+    
 
 
 if __name__ == "__main__":
-    proxies = set()
-    for url in urls:
-        new_proxies = scrapeproxies(url)
-        proxies.update(new_proxies)
-        with open("output.txt", "w") as txt_file:
-            for line in proxies:
-                txt_file.write("".join(line) + "\n")
-    text = scrapeProxyScrape("http", "50", "All")
-    print(text)
-    with open("output.txt", "a") as txt_file:
-            txt_file.write(text)
+
+    if os.path.exists('output.txt'):
+        os.remove(filePath)
+
+    if not os.path.exists('output.txt'):
+        with open('output.txt', 'w'): pass
+
+
+    threading.Thread(target=scrapeproxies, args=('http://sslproxies.org',)).start()
+    threading.Thread(target=scrapeproxies, args=('http://free-proxy-list.net',)).start()
+    threading.Thread(target=scrapeproxies, args=('http://us-proxy.org',)).start()
+    threading.Thread(target=scrapeproxies, args=('http://socks-proxy.net',)).start()
+
+
+    # proxies = set()
+    # for url in urls:
+    #     new_proxies = scrapeproxies(url)
+    #     proxies.update(new_proxies)
+    #     with open("output.txt", "w") as txt_file:
+    #         for line in proxies:
+    #             txt_file.write("".join(line) + "\n")
+    # text = scrapeProxyScrape("http", "50", "All")
+    # print(text)
+    # with open("output.txt", "a") as txt_file:
+    #         txt_file.write(text)

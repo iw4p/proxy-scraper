@@ -29,7 +29,7 @@ def checkproxy(txtfile):
 
 def checker(i):
 	proxy = 'https://' + i
-	proxy_support = urllib.request.ProxyHandler({"http": proxy, "https": proxy})
+	proxy_support = urllib.request.ProxyHandler({'https': proxy})
 	opener = urllib.request.build_opener(proxy_support)
 	urllib.request.install_opener(opener)
 	global site

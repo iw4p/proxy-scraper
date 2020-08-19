@@ -2,7 +2,7 @@
 
 Scrape more than 1K HTTP proxies in less than 2 seconds.
 
-Scraping fresh public proxies from 4 different sources:
+Scraping fresh public proxies from different sources:
 
 * [sslproxies.org](http://sslproxies.org) (HTTP, HTTPS)
 * [free-proxy-list.net](http://free-proxy-list.net) (HTTP, HTTPS)
@@ -38,16 +38,15 @@ For checking:
 python3 proxyChecker.py -t 20 -s google.com -l output.txt
 ```
 
-* With `-t` or `--timeout`, dismiss the proxy after -t seconds (Default is 20)
-* With `-l` or `--list`, path to your list.txt. (Default is output.txt)
-* With `-s` or `--site`, check with specific website like google.com. (Default is google.com)
+* With `-t` or `--timeout`, dismiss the proxy after -t seconds (Default is **20**)
+* With `-l` or `--list`, path to your list.txt. (Default is **output.txt**)
+* With `-s` or `--site`, check with specific website like google.com. (Default is **google.com**)
 * With `-v` or `--verbose`, more details.
 * With `-h` or `--help`, Show help to who did't read this README.
 
 ## Good to know
 * Dead proxies will be removed and just alive proxies will stay.
-* You can change timeout in proxyChecker.py.
-* This script is able to scrape Socks, but proxyChecker only check HTTP proxies.
+* This script is also able to scrape Socks, but proxyChecker only check HTTP(S) proxies.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

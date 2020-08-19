@@ -29,7 +29,7 @@ def checkproxy(txtfile):
 
 def checker(i):
 	proxy = 'https://' + i
-	proxy_support = urllib.request.ProxyHandler({'https' : proxy})
+	proxy_support = urllib.request.ProxyHandler({"http": proxy, "https": proxy})
 	opener = urllib.request.build_opener(proxy_support)
 	urllib.request.install_opener(opener)
 	global site
@@ -53,9 +53,9 @@ if __name__ == "__main__":
 	global site
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-t", "--timeout", type=int, help="-t 20")
-	parser.add_argument("-l", "--list", help="path to your list.txt")
-	parser.add_argument("-s", "--site", help="check with specific website like youtube.com")
+	parser.add_argument("-t", "--timeout", type=int, help="dismiss the proxy after -t seconds", default=20)
+	parser.add_argument("-l", "--list", help="path to your list.txt", default='output.txt')
+	parser.add_argument("-s", "--site", help="check with specific website like google.com", default='google.com')
 	parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
 	args = parser.parse_args()
 

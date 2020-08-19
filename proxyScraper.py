@@ -74,7 +74,7 @@ if __name__ == "__main__":
         global proxy
 
         parser = argparse.ArgumentParser()
-        parser.add_argument("-p", "--proxy", help="type http ,https, socks4, socks5", required=True)
+        parser.add_argument("-p", "--proxy", help="Supported proxy type: http ,https, socks, socks4, socks5", required=True)
         parser.add_argument("-o", "--output", help="output file name to save .txt file", default='output.txt')
         parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
         args = parser.parse_args()

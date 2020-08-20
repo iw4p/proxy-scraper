@@ -8,6 +8,8 @@ from time import time
 
 useragents=('Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')
 
+proxyType = ''
+
 def checkproxy(txtfile):
 	global out_file
 	candidate_proxies = open(txtfile).readlines()
@@ -28,12 +30,12 @@ def checkproxy(txtfile):
 		print("\n\nCurrent IPs in proxylist: %s\n" % (len(open(txtfile).readlines())))
 
 def checker(i):
-	proxy = 'https://' + i
-	proxy_support = urllib.request.ProxyHandler({'https': proxy})
+	proxy = proxyType + '://' + i
+	proxy_support = urllib.request.ProxyHandler({proxyType: proxy})
 	opener = urllib.request.build_opener(proxy_support)
 	urllib.request.install_opener(opener)
 	global site
-	req = urllib.request.Request('https://' + site)
+	req = urllib.request.Request(proxyType + '://' + site)
 	req.add_header("User-Agent", useragents)
 	try:
 		global chosenTimeout
@@ -61,6 +63,7 @@ if __name__ == "__main__":
 
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-t", "--timeout", type=int, help="dismiss the proxy after -t seconds", default=20)
+	parser.add_argument("-p", "--proxy", help="check HTTPS or HTTP proxies", default='http')
 	parser.add_argument("-l", "--list", help="path to your list.txt", default='output.txt')
 	parser.add_argument("-s", "--site", help="check with specific website like google.com", default='google.com')
 	parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
@@ -69,5 +72,6 @@ if __name__ == "__main__":
 	chosenTimeout = args.timeout
 	txtfile = args.list
 	site = args.site
+	proxyType = args.proxy
 
 	threading.Thread(target=checkproxy, args=(txtfile,)).start()

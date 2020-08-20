@@ -39,6 +39,7 @@ python3 proxyChecker.py -t 20 -s google.com -l output.txt
 ```
 
 * With `-t` or `--timeout`, dismiss the proxy after -t seconds (Default is **20**)
+* With `-p` or `--proxy`, check HTTPS or HTTP proxies (Default is **HTTP**)
 * With `-l` or `--list`, path to your list.txt. (Default is **output.txt**)
 * With `-s` or `--site`, check with specific website like google.com. (Default is **google.com**)
 * With `-v` or `--verbose`, more details.

@@ -4,9 +4,9 @@ import random
 import sys
 import os
 import argparse
+from time import time
 
 useragents=('Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')
-
 
 def checkproxy(txtfile):
 	global out_file
@@ -37,13 +37,20 @@ def checker(i):
 	req.add_header("User-Agent", useragents)
 	try:
 		global chosenTimeout
+		start_time = time()
 		urllib.request.urlopen(req, timeout=chosenTimeout)
+		end_time = time()
+		time_taken = end_time - start_time
 		out_file.write(i)
 		if args.verbose:
-			print ("%s works!\n" % proxy)
+			print ("%s works!" % proxy)
+			print('time: ' + str(time_taken) + '\n')
 	except:
+		pass
 		if args.verbose:
 			print ("%s does not respond.\n" % proxy)
+
+
 
 
 if __name__ == "__main__":

@@ -104,7 +104,7 @@ if __name__ == "__main__":
             threading.Thread(target=proxyscrapeScraper, args=('socks4','1000','All',)).start()
             threading.Thread(target=proxyscrapeScraper, args=('socks5','1000','All',)).start()
             threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'socks5', 'elite',)).start()
-            threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https4', 'elite',)).start()
+            threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'socks4', 'elite',)).start()
             output()
 
         if proxy == 'socks4':

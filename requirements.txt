@@ -1,2 +1,2 @@
-BeautifulSoup
+beautifulsoup4
 requests

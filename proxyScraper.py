@@ -5,6 +5,7 @@ import os
 import asyncio
 import argparse
 
+
 pathTextFile = ''
 proxyType = ''
 
@@ -26,8 +27,7 @@ def proxyListDownloadScraper(url, type, anon):
     with open(pathTextFile, "a") as txt_file:
         for line in html.split('\n'):
             if len(line) > 0:
-                txt_file.write(line)
-                
+                txt_file.write(line)  
 
 
 # From sslproxies.org, free-proxy-list.net, us-proxy.org, socks-proxy.net
@@ -36,6 +36,7 @@ def makesoup(url):
     if args.verbose:
         print(url + ' scraped successfully')
     return BeautifulSoup(page.text,"html.parser")
+
 
 def proxyscrape(table):
     proxies = set()
@@ -51,6 +52,7 @@ def proxyscrape(table):
             proxy += cell.text.replace('&nbsp;', '')
             count += 1
     return proxies
+
 
 def scrapeproxies(url):
     soup=makesoup(url)
@@ -69,6 +71,7 @@ def output():
     elif not os.path.exists(pathTextFile):
         with open(pathTextFile, 'w'): pass
 
+	
 if __name__ == "__main__":
 
         global proxy
@@ -116,5 +119,3 @@ if __name__ == "__main__":
             threading.Thread(target=proxyscrapeScraper, args=('socks5','1000','All',)).start()
             threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'socks5', 'elite',)).start()
             output()
-
-

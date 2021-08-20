@@ -56,7 +56,7 @@ def proxyscrape(table):
 
 def scrapeproxies(url):
     soup=makesoup(url)
-    result = proxyscrape(table = soup.find('table', attrs={'id': 'proxylisttable'}))
+    result = proxyscrape(table = soup.find('table', attrs={'class': 'table table-striped table-bordered'}))
     proxies = set()
     proxies.update(result)
     with open(pathTextFile, "a") as txt_file:
@@ -88,8 +88,8 @@ if __name__ == "__main__":
         if proxy == 'https':
             threading.Thread(target=scrapeproxies, args=('http://sslproxies.org',)).start()
             threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https', 'elite',)).start()
-#            threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https', 'transparent',)).start()
-#            threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https', 'anonymous',)).start()
+#           threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https', 'transparent',)).start()
+#           threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https', 'anonymous',)).start()
             
             output()
 

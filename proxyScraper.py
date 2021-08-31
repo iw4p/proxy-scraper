@@ -2,14 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 import threading
 import os
-import asyncio
 import argparse
 
 
 pathTextFile = ''
 proxyType = ''
 
-# From proxyscrape.com 
+# From proxyscrape.com
 def proxyscrapeScraper(proxytype, timeout, country):
     response = requests.get("https://api.proxyscrape.com/?request=getproxies&proxytype=" + proxytype + "&timeout=" + timeout + "&country=" + country)
     proxies = response.text
@@ -20,14 +19,14 @@ def proxyscrapeScraper(proxytype, timeout, country):
 # From proxy-list.download
 def proxyListDownloadScraper(url, type, anon):
     session = requests.session()
-    url = url + '?type=' + type + '&anon=' + anon 
+    url = url + '?type=' + type + '&anon=' + anon
     html = session.get(url).text
     if args.verbose:
         print(url)
     with open(pathTextFile, "a") as txt_file:
         for line in html.split('\n'):
             if len(line) > 0:
-                txt_file.write(line)  
+                txt_file.write(line)
 
 
 # From sslproxies.org, free-proxy-list.net, us-proxy.org, socks-proxy.net
@@ -71,7 +70,7 @@ def output():
     elif not os.path.exists(pathTextFile):
         with open(pathTextFile, 'w'): pass
 
-	
+
 if __name__ == "__main__":
 
         global proxy
@@ -90,7 +89,7 @@ if __name__ == "__main__":
             threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https', 'elite',)).start()
 #           threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https', 'transparent',)).start()
 #           threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https', 'anonymous',)).start()
-            
+
             output()
 
         if proxy == 'http':

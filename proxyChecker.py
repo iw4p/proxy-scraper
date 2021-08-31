@@ -6,9 +6,10 @@ import os
 import argparse
 from time import time
 
+def random_user_agent(file='user_agents.txt'):
+	user_agent = (random.choice(open(file).readlines())).replace("\n", "")
+	return str(user_agent)
 
-# useragents, для сайта.
-useragents=('Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')
 proxyType = ''
 
 def checkproxy(txtfile):
@@ -38,7 +39,7 @@ def checker(i):
 	urllib.request.install_opener(opener)
 	global site
 	req = urllib.request.Request(proxyType + '://' + site)
-	req.add_header("User-Agent", useragents)
+	req.add_header("User-Agent", random_user_agent())
 	try:
 		global chosenTimeout
 		start_time = time()

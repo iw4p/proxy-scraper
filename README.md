@@ -42,6 +42,7 @@ python3 proxyChecker.py -t 20 -s google.com -l output.txt
 * With `-p` or `--proxy`, check HTTPS or HTTP proxies (Default is **HTTP**)
 * With `-l` or `--list`, path to your list.txt. (Default is **output.txt**)
 * With `-s` or `--site`, check with specific website like google.com. (Default is **google.com**)
+* With `-r` or `--random_agent`, it will use a random user agent per proxy.
 * With `-v` or `--verbose`, more details.
 * With `-h` or `--help`, Show help to who did't read this README.
 

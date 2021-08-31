@@ -1,8 +1,6 @@
 import urllib.request
 import threading
 import random
-import sys
-import os
 import argparse
 from time import time
 

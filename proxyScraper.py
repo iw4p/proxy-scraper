@@ -3,10 +3,24 @@ from bs4 import BeautifulSoup
 import threading
 import os
 import argparse
+import re
 
 
 pathTextFile = ''
 proxyType = ''
+
+# From spys.me
+def spys_me_scraper(proxytype):
+    response = requests.get("https://spys.me/" + proxytype + ".txt")
+    proxies = response.text
+
+    pattern = re.compile("\\d{1,3}(?:\\.\\d{1,3}){3}(?::\\d{1,5})?")
+    matcher = re.findall(pattern, proxies)
+
+    with open(pathTextFile, "a") as txt_file:
+        for proxy in matcher:
+            txt_file.write(proxy + "\n")
+
 
 # From proxyscrape.com
 def proxyscrapeScraper(proxytype, timeout, country):
@@ -68,53 +82,56 @@ def output():
     if os.path.exists(pathTextFile):
         os.remove(pathTextFile)
     elif not os.path.exists(pathTextFile):
-        with open(pathTextFile, 'w'): pass
+        with open(pathTextFile, 'w'):
+            pass
 
 
 if __name__ == "__main__":
 
-        global proxy
+    global proxy
 
-        parser = argparse.ArgumentParser()
-        parser.add_argument("-p", "--proxy", help="Supported proxy type: http ,https, socks, socks4, socks5", required=True)
-        parser.add_argument("-o", "--output", help="output file name to save .txt file", default='output.txt')
-        parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
-        args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--proxy", help="Supported proxy type: http ,https, socks, socks4, socks5", required=True)
+    parser.add_argument("-o", "--output", help="output file name to save .txt file", default='output.txt')
+    parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
+    args = parser.parse_args()
 
-        proxy = args.proxy
-        pathTextFile = args.output
+    proxy = args.proxy
+    pathTextFile = args.output
 
-        if proxy == 'https':
-            threading.Thread(target=scrapeproxies, args=('http://sslproxies.org',)).start()
-            threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https', 'elite',)).start()
+    if proxy == 'https':
+        threading.Thread(target=scrapeproxies, args=('http://sslproxies.org',)).start()
+        threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https', 'elite',)).start()
 #           threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https', 'transparent',)).start()
 #           threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'https', 'anonymous',)).start()
 
-            output()
+        output()
 
-        if proxy == 'http':
-            threading.Thread(target=scrapeproxies, args=('http://free-proxy-list.net',)).start()
-            threading.Thread(target=scrapeproxies, args=('http://us-proxy.org',)).start()
-            threading.Thread(target=proxyscrapeScraper, args=('http','1000','All',)).start()
-            threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'http', 'elite',)).start()
-            threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'http', 'transparent',)).start()
-            threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'http', 'anonymous',)).start()
-            output()
+    if proxy == 'http':
+        threading.Thread(target=scrapeproxies, args=('http://free-proxy-list.net',)).start()
+        threading.Thread(target=scrapeproxies, args=('http://us-proxy.org',)).start()
+        threading.Thread(target=proxyscrapeScraper, args=('http','1000','All',)).start()
+        threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'http', 'elite',)).start()
+        threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'http', 'transparent',)).start()
+        threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'http', 'anonymous',)).start()
+        threading.Thread(target=spys_me_scraper, args=('proxy',)).start()
+        output()
 
-        if proxy == 'socks':
-            threading.Thread(target=scrapeproxies, args=('http://socks-proxy.net',)).start()
-            threading.Thread(target=proxyscrapeScraper, args=('socks4','1000','All',)).start()
-            threading.Thread(target=proxyscrapeScraper, args=('socks5','1000','All',)).start()
-            threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'socks5', 'elite',)).start()
-            threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'socks4', 'elite',)).start()
-            output()
+    if proxy == 'socks':
+        threading.Thread(target=scrapeproxies, args=('http://socks-proxy.net',)).start()
+        threading.Thread(target=proxyscrapeScraper, args=('socks4','1000','All',)).start()
+        threading.Thread(target=proxyscrapeScraper, args=('socks5','1000','All',)).start()
+        threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'socks5', 'elite',)).start()
+        threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'socks4', 'elite',)).start()
+        threading.Thread(target=spys_me_scraper, args=('socks',)).start()
+        output()
 
-        if proxy == 'socks4':
-            threading.Thread(target=proxyscrapeScraper, args=('socks4','1000','All',)).start()
-            threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'socks4', 'elite',)).start()
-            output()
+    if proxy == 'socks4':
+        threading.Thread(target=proxyscrapeScraper, args=('socks4','1000','All',)).start()
+        threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'socks4', 'elite',)).start()
+        output()
 
-        if proxy == 'socks5':
-            threading.Thread(target=proxyscrapeScraper, args=('socks5','1000','All',)).start()
-            threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'socks5', 'elite',)).start()
-            output()
+    if proxy == 'socks5':
+        threading.Thread(target=proxyscrapeScraper, args=('socks5','1000','All',)).start()
+        threading.Thread(target=proxyListDownloadScraper, args=('https://www.proxy-list.download/api/v1/get', 'socks5', 'elite',)).start()
+        output()

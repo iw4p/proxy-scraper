@@ -1,7 +1,6 @@
 # Proxy scraper and checker 
 
-[![Tests Status](https://github.com/iw4p/proxy-scraper/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/iw4p/proxy-scraper/actions/workflows/tests.yml)
-
+[![Tests](https://github.com/iw4p/proxy-scraper/actions/workflows/tests.yml/badge.svg)](https://github.com/iw4p/proxy-scraper/actions/workflows/tests.yml)
 Scrape more than 1K HTTP proxies in less than 2 seconds.
 
 Scraping fresh public proxies from different sources:

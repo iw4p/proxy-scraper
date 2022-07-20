@@ -124,7 +124,7 @@ def scrape(method, output, verbose):
     proxies = []
 
     def scrape_scraper(scraper):
-        verbose_print(verbose, "Looking {}...".format(scraper.get_url()))
+        verbose_print(verbose, f"Looking {scraper.get_url()}...")
         proxies.extend(scraper.scrape())
 
     threads = []
@@ -137,7 +137,7 @@ def scrape(method, output, verbose):
     for thread in threads:
         thread.join()
 
-    verbose_print(verbose, "Writing proxies to file...")
+    verbose_print(verbose, f"Writing {len(proxies)} proxies to file...")
     with open(output, "w") as f:
         f.write("\n".join(proxies))
     verbose_print(verbose, "Done!")

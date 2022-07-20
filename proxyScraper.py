@@ -108,6 +108,11 @@ scrapers = [
 ]
 
 
+def verbose_print(verbose, message):
+    if verbose:
+        print(message)
+
+
 def scrape(method, output, verbose):
     methods = [method]
     if method == "socks":
@@ -115,18 +120,16 @@ def scrape(method, output, verbose):
     proxy_scrapers = [s for s in scrapers if s.method in methods]
     if not proxy_scrapers:
         raise ValueError("Method not supported")
-    if verbose:
-        print("Scraping proxies...")
+    verbose_print(verbose, "Scraping proxies...")
     proxies = []
 
     def scrape_scraper(scraper):
-        if verbose:
-            print("Looking {}...".format(scraper.get_url()))
+        verbose_print(verbose, "Looking {}...".format(scraper.get_url()))
         proxies.extend(scraper.scrape())
 
     threads = []
     for scraper in proxy_scrapers:
-        threads.append(threading.Thread(target=scrape_scraper, args=(scraper, )))
+        threads.append(threading.Thread(target=scrape_scraper, args=(scraper,)))
 
     for thread in threads:
         thread.start()
@@ -134,12 +137,10 @@ def scrape(method, output, verbose):
     for thread in threads:
         thread.join()
 
-    if verbose:
-        print("Writing proxies to file...")
+    verbose_print(verbose, "Writing proxies to file...")
     with open(output, "w") as f:
         f.write("\n".join(proxies))
-    if verbose:
-        print("Done!")
+    verbose_print(verbose, "Done!")
 
 
 if __name__ == "__main__":

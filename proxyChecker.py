@@ -41,6 +41,11 @@ class Proxy:
         return self.proxy
 
 
+def verbose_print(verbose, message):
+    if verbose:
+        print(message)
+
+
 def check(file, timeout, method, site, verbose, random_user_agent):
     proxies = []
     with open(file, "r") as f:
@@ -57,13 +62,12 @@ def check(file, timeout, method, site, verbose, random_user_agent):
         if random_user_agent:
             new_user_agent = random.choice(user_agents)
         valid, time_taken, error = proxy.check(site, timeout, new_user_agent)
-        if valid:
-            valid_proxies.append(proxy)
-            if verbose:
-                print(proxy, "is valid, took", time_taken, "seconds")
-        else:
-            if verbose:
-                print(proxy, "is invalid: {}".format(repr(error)))
+        message = {
+            True: "{} is valid, took {} seconds".format(proxy, time_taken),
+            False: "{} is invalid: {}".format(proxy, repr(error)),
+        }[valid]
+        verbose_print(verbose, message)
+        valid_proxies.extend([proxy] if valid else [])
 
     threads = []
     for proxy in proxies:

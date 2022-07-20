@@ -24,7 +24,7 @@ class Scraper:
     def scrape(self):
         response = self.get_response()
         proxies = self.handle(response)
-        pattern = re.compile("\\d{1,3}(?:\\.\\d{1,3}){3}(?::\\d{1,5})?")
+        pattern = re.compile(r"\d{1,3}(?:\.\d{1,3}){3}(?::\d{1,5})?")
         return re.findall(pattern, proxies)
 
 
@@ -124,10 +124,16 @@ def scrape(method, output, verbose):
             print("Looking {}...".format(scraper.get_url()))
         proxies.extend(scraper.scrape())
 
+    threads = []
     for scraper in proxy_scrapers:
-        threading.Thread(target=scrape_scraper, args=(scraper, )).start()
-    while threading.active_count() > 1:
-        pass
+        threads.append(threading.Thread(target=scrape_scraper, args=(scraper, )))
+
+    for thread in threads:
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
     if verbose:
         print("Writing proxies to file...")
     with open(output, "w") as f:

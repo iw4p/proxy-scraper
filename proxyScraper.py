@@ -1,6 +1,4 @@
-import abc
 import argparse
-import os
 import re
 import threading
 
@@ -110,7 +108,7 @@ scrapers = [
 ]
 
 
-def start(method, output, verbose):
+def scrape(method, output, verbose):
     methods = [method]
     if method == "socks":
         methods += ["socks4", "socks5"]
@@ -120,8 +118,14 @@ def start(method, output, verbose):
     if verbose:
         print("Scraping proxies...")
     proxies = []
+
+    def scrape_scraper(scraper):
+        if verbose:
+            print("Looking {}...".format(scraper.get_url()))
+        proxies.extend(scraper.scrape())
+
     for scraper in proxy_scrapers:
-        threading.Thread(target=lambda: proxies.extend(scraper.scrape())).start()
+        threading.Thread(target=scrape_scraper, args=(scraper, )).start()
     while threading.active_count() > 1:
         pass
     if verbose:
@@ -154,4 +158,4 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    start(method=args.proxy, output=args.output, verbose=args.verbose)
+    scrape(method=args.proxy, output=args.output, verbose=args.verbose)

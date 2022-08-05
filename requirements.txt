@@ -2,4 +2,4 @@ beautifulsoup4==4.11.1
 requests==2.27.1
 colorama==0.4.4
 urllib3==1.26.9
-httpx==0.23.0
+httpx

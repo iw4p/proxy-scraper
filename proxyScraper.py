@@ -1,6 +1,7 @@
 import argparse
 import re
 import threading
+import time
 
 import requests
 from bs4 import BeautifulSoup
@@ -114,6 +115,7 @@ def verbose_print(verbose, message):
 
 
 def scrape(method, output, verbose):
+    now = time.time()
     methods = [method]
     if method == "socks":
         methods += ["socks4", "socks5"]
@@ -141,6 +143,7 @@ def scrape(method, output, verbose):
     with open(output, "w") as f:
         f.write("\n".join(proxies))
     verbose_print(verbose, "Done!")
+    verbose_print(verbose, f"Took {time.time() - now} seconds")
 
 
 if __name__ == "__main__":

@@ -1,9 +1,9 @@
 import argparse
+import asyncio
 import re
-import threading
+import httpx
 import time
 
-import requests
 from bs4 import BeautifulSoup
 
 
@@ -16,15 +16,15 @@ class Scraper:
     def get_url(self, **kwargs):
         return self._url.format(**kwargs, method=self.method)
 
-    def get_response(self):
-        return requests.get(self.get_url())
+    async def get_response(self, client):
+        return await client.get(self.get_url())
 
-    def handle(self, response):
+    async def handle(self, response):
         return response.text
 
-    def scrape(self):
-        response = self.get_response()
-        proxies = self.handle(response)
+    async def scrape(self, client):
+        response = await self.get_response(client)
+        proxies = await self.handle(response)
         pattern = re.compile(r"\d{1,3}(?:\.\d{1,3}){3}(?::\d{1,5})?")
         return re.findall(pattern, proxies)
 
@@ -68,14 +68,11 @@ class ProxyListDownloadScraper(Scraper):
     def get_url(self, **kwargs):
         return super().get_url(anon=self.anon, **kwargs)
 
-    def get_response(self):
-        return requests.session().get(self.get_url())
-
 
 # For websites using table in html
 class GeneralTableScraper(Scraper):
 
-    def handle(self, response):
+    async def handle(self, response):
         soup = BeautifulSoup(response.text, "html.parser")
         proxies = set()
         table = soup.find("table", attrs={"class": "table table-striped table-bordered"})
@@ -114,7 +111,7 @@ def verbose_print(verbose, message):
         print(message)
 
 
-def scrape(method, output, verbose):
+async def scrape(method, output, verbose):
     now = time.time()
     methods = [method]
     if method == "socks":
@@ -125,19 +122,18 @@ def scrape(method, output, verbose):
     verbose_print(verbose, "Scraping proxies...")
     proxies = []
 
-    def scrape_scraper(scraper):
+    tasks = []
+    client = httpx.AsyncClient(follow_redirects=True)
+
+    async def scrape_scraper(scraper):
         verbose_print(verbose, f"Looking {scraper.get_url()}...")
-        proxies.extend(scraper.scrape())
+        proxies.extend(await scraper.scrape(client))
 
-    threads = []
     for scraper in proxy_scrapers:
-        threads.append(threading.Thread(target=scrape_scraper, args=(scraper,)))
+        tasks.append(asyncio.create_task(scrape_scraper(scraper)))
 
-    for thread in threads:
-        thread.start()
-
-    for thread in threads:
-        thread.join()
+    await asyncio.gather(*tasks)
+    await client.aclose()
 
     verbose_print(verbose, f"Writing {len(proxies)} proxies to file...")
     with open(output, "w") as f:
@@ -168,4 +164,4 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    scrape(method=args.proxy, output=args.output, verbose=args.verbose)
+    asyncio.run(scrape(args.proxy, args.output, args.verbose))

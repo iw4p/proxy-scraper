@@ -1,9 +1,9 @@
 import argparse
 import asyncio
 import re
-import httpx
 import time
 
+import httpx
 from bs4 import BeautifulSoup
 
 

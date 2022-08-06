@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 import re
+import sys
 import time
 
 import httpx
@@ -164,4 +165,9 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    asyncio.run(scrape(args.proxy, args.output, args.verbose))
+    if sys.version_info >= (3, 7):
+        asyncio.run(scrape(args.proxy, args.output, args.verbose))
+    else:
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(scrape(args.proxy, args.output, args.verbose))
+        loop.close()

@@ -131,7 +131,7 @@ async def scrape(method, output, verbose):
         proxies.extend(await scraper.scrape(client))
 
     for scraper in proxy_scrapers:
-        tasks.append(asyncio.create_task(scrape_scraper(scraper)))
+        tasks.append(asyncio.ensure_future(scrape_scraper(scraper)))
 
     await asyncio.gather(*tasks)
     await client.aclose()

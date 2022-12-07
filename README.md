@@ -59,6 +59,9 @@ python3 proxyChecker.py -t 20 -s google.com -l output.txt
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+### Issues
+Feel free to submit issues and enhancement requests or contact me via [vida.page/nima](https://vida.page/nima).
+
 ## Credit
 * [Proxy Scraper](https://github.com/Abigdog4/ProxyScrapper)
 * [Proxy Checker](https://github.com/byRo0t96/proxy_checker)

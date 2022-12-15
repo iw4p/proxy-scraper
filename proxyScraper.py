@@ -1,5 +1,6 @@
 import argparse
 import asyncio
+import platform
 import re
 import sys
 import time
@@ -165,7 +166,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if sys.version_info >= (3, 7):
+    if sys.version_info >= (3, 7) or platform.system() != 'Windows':
         asyncio.run(scrape(args.proxy, args.output, args.verbose))
     else:
         loop = asyncio.get_event_loop()

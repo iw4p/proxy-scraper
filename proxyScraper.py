@@ -166,7 +166,11 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if sys.version_info >= (3, 7) or platform.system() != 'Windows':
+    if sys.version_info >= (3, 7) and platform.system() == 'Windows':
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(scrape(args.proxy, args.output, args.verbose))
+        loop.close()
+    elif sys.version_info >= (3, 7):
         asyncio.run(scrape(args.proxy, args.output, args.verbose))
     else:
         loop = asyncio.get_event_loop()

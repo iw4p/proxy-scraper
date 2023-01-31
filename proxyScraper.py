@@ -149,7 +149,7 @@ async def scrape(method, output, verbose):
         try:
             verbose_print(verbose, f"Looking {scraper.get_url()}...")
             proxies.extend(await scraper.scrape(client))
-        except:
+        except Exception:
             pass
 
     for scraper in proxy_scrapers:

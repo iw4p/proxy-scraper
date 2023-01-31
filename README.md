@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/iw4p/proxy-scraper/actions/workflows/tests.yml/badge.svg)](https://github.com/iw4p/proxy-scraper/actions/workflows/tests.yml)
 
-Scrape more than 1K HTTP proxies in less than 2 seconds.
+Scrape more than 1K HTTP - HTTPS - SOCKS4 - SOCKS5 proxies in less than 2 seconds.
 
 Scraping fresh public proxies from different sources:
 
@@ -12,6 +12,7 @@ Scraping fresh public proxies from different sources:
 * [socks-proxy.net](http://socks-proxy.net) (Socks4, Socks5)
 * [proxyscrape.com](https://proxyscrape.com) (HTTP, Socks4, Socks5)
 * [proxy-list.download](https://www.proxy-list.download) (HTTP, HTTPS, Socks4, Socks5)
+* [geonode.com](https://geonode.com) (HTTP, HTTPS, Socks4, Socks5)
 
 ## Installation
 
@@ -50,7 +51,7 @@ python3 proxyChecker.py -t 20 -s google.com -l output.txt
 
 ## Good to know
 * Dead proxies will be removed and just alive proxies will stay.
-* This script is also able to scrape Socks, but proxyChecker only check HTTP(S) proxies.
+* This script is also able to scrape Socks, but proxyChecker only checks HTTP(S) proxies.
 
 ## Star History
 
@@ -61,10 +62,6 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ### Issues
 Feel free to submit issues and enhancement requests or contact me via [vida.page/nima](https://vida.page/nima).
-
-## Credit
-* [Proxy Scraper](https://github.com/Abigdog4/ProxyScrapper)
-* [Proxy Checker](https://github.com/byRo0t96/proxy_checker)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

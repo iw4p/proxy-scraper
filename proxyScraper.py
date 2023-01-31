@@ -146,8 +146,11 @@ async def scrape(method, output, verbose):
     client = httpx.AsyncClient(follow_redirects=True)
 
     async def scrape_scraper(scraper):
-        verbose_print(verbose, f"Looking {scraper.get_url()}...")
-        proxies.extend(await scraper.scrape(client))
+        try:
+            verbose_print(verbose, f"Looking {scraper.get_url()}...")
+            proxies.extend(await scraper.scrape(client))
+        except:
+            pass
 
     for scraper in proxy_scrapers:
         tasks.append(asyncio.ensure_future(scrape_scraper(scraper)))

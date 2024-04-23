@@ -3,6 +3,8 @@ import random
 import re
 import threading
 import urllib.request
+import socks
+import socket
 from time import time
 
 user_agents = []
@@ -13,29 +15,45 @@ with open("user_agents.txt", "r") as f:
 
 class Proxy:
     def __init__(self, method, proxy):
-        if method.lower() not in ["http", "https"]:
-            raise NotImplementedError("Only HTTP and HTTPS are supported")
+        if method.lower() not in ["http", "https", "socks4", "socks5"]:
+            raise NotImplementedError("Only HTTP, HTTPS, SOCKS4, and SOCKS5 are supported")
         self.method = method.lower()
         self.proxy = proxy
 
     def is_valid(self):
         return re.match(r"\d{1,3}(?:\.\d{1,3}){3}(?::\d{1,5})?$", self.proxy)
 
-    def check(self, site, timeout, user_agent):
-        url = self.method + "://" + self.proxy
-        proxy_support = urllib.request.ProxyHandler({self.method: url})
-        opener = urllib.request.build_opener(proxy_support)
-        urllib.request.install_opener(opener)
-        req = urllib.request.Request(self.method + "://" + site)
-        req.add_header("User-Agent", user_agent)
-        try:
-            start_time = time()
-            urllib.request.urlopen(req, timeout=timeout)
-            end_time = time()
-            time_taken = end_time - start_time
-            return True, time_taken, None
-        except Exception as e:
-            return False, 0, e
+    def check(self, site, timeout, user_agent, verbose):
+        if self.method in ["socks4", "socks5"]:
+            socks.set_default_proxy(socks.SOCKS4 if self.method == "socks4" else socks.SOCKS5, self.proxy.split(':')[0], int(self.proxy.split(':')[1]))
+            socket.socket = socks.socksocket
+            try:
+                start_time = time()
+                urllib.request.urlopen(site, timeout=timeout)
+                end_time = time()
+                time_taken = end_time - start_time
+                verbose_print(verbose, f"Proxy {self.proxy} is valid, time taken: {time_taken}")
+                return True, time_taken, None
+            except Exception as e:
+                verbose_print(verbose, f"Proxy {self.proxy} is not valid, error: {str(e)}")
+                return False, 0, e
+        else:
+            url = self.method + "://" + self.proxy
+            proxy_support = urllib.request.ProxyHandler({self.method: url})
+            opener = urllib.request.build_opener(proxy_support)
+            urllib.request.install_opener(opener)
+            req = urllib.request.Request(self.method + "://" + site)
+            req.add_header("User-Agent", user_agent)
+            try:
+                start_time = time()
+                urllib.request.urlopen(req, timeout=timeout)
+                end_time = time()
+                time_taken = end_time - start_time
+                verbose_print(verbose, f"Proxy {self.proxy} is valid, time taken: {time_taken}")
+                return True, time_taken, None
+            except Exception as e:
+                verbose_print(verbose, f"Proxy {self.proxy} is not valid, error: {str(e)}")
+                return False, 0, e
 
     def __str__(self):
         return self.proxy
@@ -61,12 +79,7 @@ def check(file, timeout, method, site, verbose, random_user_agent):
         new_user_agent = user_agent
         if random_user_agent:
             new_user_agent = random.choice(user_agents)
-        valid, time_taken, error = proxy.check(site, timeout, new_user_agent)
-        message = {
-            True: f"{proxy} is valid, took {time_taken} seconds",
-            False: f"{proxy} is invalid: {repr(error)}",
-        }[valid]
-        verbose_print(verbose, message)
+        valid, time_taken, error = proxy.check(site, timeout, new_user_agent, verbose)
         valid_proxies.extend([proxy] if valid else [])
 
     threads = []
@@ -96,7 +109,7 @@ if __name__ == "__main__":
         help="Dismiss the proxy after -t seconds",
         default=20,
     )
-    parser.add_argument("-p", "--proxy", help="Check HTTPS or HTTP proxies", default="http")
+    parser.add_argument("-p", "--proxy", help="Check HTTPS, HTTP, SOCKS4, or SOCKS5 proxies", default="http")
     parser.add_argument("-l", "--list", help="Path to your proxy list file", default="output.txt")
     parser.add_argument(
         "-s",

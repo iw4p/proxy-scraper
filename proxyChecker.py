@@ -1,11 +1,12 @@
 import argparse
 import random
 import re
+import socket
 import threading
 import urllib.request
-import socks
-import socket
 from time import time
+
+import socks
 
 user_agents = []
 with open("user_agents.txt", "r") as f:
@@ -25,7 +26,8 @@ class Proxy:
 
     def check(self, site, timeout, user_agent, verbose):
         if self.method in ["socks4", "socks5"]:
-            socks.set_default_proxy(socks.SOCKS4 if self.method == "socks4" else socks.SOCKS5, self.proxy.split(':')[0], int(self.proxy.split(':')[1]))
+            socks.set_default_proxy(socks.SOCKS4 if self.method == "socks4" else socks.SOCKS5,
+                                    self.proxy.split(':')[0], int(self.proxy.split(':')[1]))
             socket.socket = socks.socksocket
             try:
                 start_time = time()

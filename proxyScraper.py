@@ -157,9 +157,14 @@ scrapers = [
     GeneralTableScraper("socks", "http://socks-proxy.net"),
     GeneralDivScraper("http","https://freeproxy.lunaproxy.com/"),
     GitHubScraper("http","https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/all/data.txt"),
-    GitHubScraper("socks","https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/all/data.txt"),
+    GitHubScraper("socks4","https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/all/data.txt"),
+    GitHubScraper("socks5","https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/all/data.txt"),
     GitHubScraper("http","https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/all.txt"),
     GitHubScraper("socks","https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/all.txt"),
+    GitHubScraper("https","https://raw.githubusercontent.com/zloi-user/hideip.me/main/https.txt"),
+    GitHubScraper("http","https://raw.githubusercontent.com/zloi-user/hideip.me/main/http.txt"),
+    GitHubScraper("socks4","https://raw.githubusercontent.com/zloi-user/hideip.me/main/socks4.txt"),
+    GitHubScraper("socks5","https://raw.githubusercontent.com/zloi-user/hideip.me/main/socks5.txt"),
 ]
 
 

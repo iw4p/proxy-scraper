@@ -167,11 +167,9 @@ scrapers = [
     GitHubScraper("socks5", "https://raw.githubusercontent.com/zloi-user/hideip.me/main/socks5.txt"),
 ]
 
-
 def verbose_print(verbose, message):
     if verbose:
         print(message)
-
 
 async def scrape(method, output, verbose):
     now = time.time()
@@ -207,8 +205,7 @@ async def scrape(method, output, verbose):
     verbose_print(verbose, "Done!")
     verbose_print(verbose, f"Took {time.time() - now} seconds")
 
-
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-p",
@@ -240,3 +237,6 @@ if __name__ == "__main__":
         loop = asyncio.get_event_loop()
         loop.run_until_complete(scrape(args.proxy, args.output, args.verbose))
         loop.close()
+
+if __name__ == "__main__":
+    main()

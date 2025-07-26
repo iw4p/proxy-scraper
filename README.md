@@ -1,21 +1,20 @@
-# Proxy Scraper and Checker
+# Proxy Scraper & Checker
 
 [![Tests](https://github.com/iw4p/proxy-scraper/actions/workflows/tests.yml/badge.svg)](https://github.com/iw4p/proxy-scraper/actions/workflows/tests.yml)
 [![Downloads](https://static.pepy.tech/badge/proxyz)](https://pepy.tech/project/proxyz)
 
-Scrape more than 1K HTTP - HTTPS - SOCKS4 - SOCKS5 proxies in less than 2 seconds.
+**Fast, reliable proxy scraper that collects 30K+ HTTP/HTTPS/SOCKS proxies from 5+ sources in seconds.**
 
-Scraping fresh public proxies from different sources:
+✨ **Features:**
+- ⚡ **Fast scraping** - All sources scraped concurrently  
+- 🛡️ **Smart filtering** - Automatically removes CDN/bad IPs (Cloudflare, etc.)
+- 🌍 **Global coverage** - Proxies from Asia, Europe, Americas
+- 🔧 **Easy to use** - Simple CLI interface
+- ✅ **Quality checked** - Built-in proxy validation
 
-- [sslproxies.org](http://sslproxies.org) (HTTP, HTTPS)
-- [free-proxy-list.net](http://free-proxy-list.net) (HTTP, HTTPS)
-- [us-proxy.org](http://us-proxy.org) (HTTP, HTTPS)
-- [socks-proxy.net](http://socks-proxy.net) (Socks4, Socks5)
-- [proxyscrape.com](https://proxyscrape.com) (HTTP, Socks4, Socks5)
-- [proxy-list.download](https://www.proxy-list.download) (HTTP, HTTPS, Socks4, Socks5)
-- [geonode.com](https://geonode.com) (HTTP, HTTPS, Socks4, Socks5)
+## Installation & Setup
 
-## Installation
+### 📦 Option 1: Install from PyPI (Recommended)
 
 You can install the package directly from PyPI using `pip`:
 
@@ -23,63 +22,276 @@ You can install the package directly from PyPI using `pip`:
 pip install proxyz
 ```
 
+**Verify installation:**
+```bash
+proxy_scraper --help
+proxy_checker --help
+```
+
+### 🔧 Option 2: Install from Source Code
+
 Alternatively, you can install dependencies manually if you're working from the source code:
 
 ```bash
+# Clone the repository
+git clone https://github.com/iw4p/proxy-scraper.git
+cd proxy-scraper
+
+# Install dependencies
 pip3 install -r requirements.txt
+
+# Test the installation
+python proxyScraper.py --help
+python proxyChecker.py --help
 ```
 
-## Usage
+### 🐍 Python Requirements
+- **Python 3.9+** (3.9, 3.10, 3.11, 3.12 supported)
+- **Dependencies:** httpx, beautifulsoup4, pysocks
 
-### Using the Command-Line Interface
+## Quick Start Tutorial
 
-Once installed via `pip`, you can use the command-line tools `proxy_scraper` and `proxy_checker` directly.
-
-#### For Scraping Proxies:
-
+### Step 1: Scrape Proxies
 ```bash
+# Get HTTP proxies (basic)
 proxy_scraper -p http
+
+# Get HTTPS proxies
+proxy_scraper -p https
+
+# Get SOCKS4 proxies
+proxy_scraper -p socks4
+
+# Get SOCKS5 proxies
+proxy_scraper -p socks5
+
+# Get all SOCKS proxies (SOCKS4 + SOCKS5)
+proxy_scraper -p socks
+
+# Save to custom file (example: HTTP)
+proxy_scraper -p http -o output.txt -v
+
+# Save HTTPS proxies with verbose output
+proxy_scraper -p https -v -o output.txt
+
+# Save SOCKS4 proxies
+proxy_scraper -p socks4 -o output.txt
+
+# Save SOCKS5 proxies
+proxy_scraper -p socks5 -o output.txt
 ```
 
-- With `-p` or `--proxy`, you can choose your proxy type. Supported proxy types are: **HTTP - HTTPS - Socks (Both 4 and 5) - Socks4 - Socks5**.
-- With `-o` or `--output`, specify the output file name where the proxies will be saved. (Default is **output.txt**).
-- With `-v` or `--verbose`, increase output verbosity.
-- With `-h` or `--help`, show the help message.
 
-#### For Checking Proxies:
-
+### Step 2: Check Proxy Quality
 ```bash
-proxy_checker -p http -t 20 -s https://google.com -l output.txt
+# Test scraped HTTP proxies (basic)
+proxy_checker -l output.txt -t 10
+
+# Test HTTP proxies
+proxy_checker -p http -l output.txt -t 10
+
+# Test HTTPS proxies
+proxy_checker -p https -l output.txt -t 10
+
+# Test SOCKS4 proxies
+proxy_checker -p socks4 -l output.txt -t 10
+
+# Test SOCKS5 proxies
+proxy_checker -p socks5 -l output.txt -t 10
+
+# Test against specific site with verbose output
+proxy_checker -l output.txt -s https://google.com -v
+
+# Use random user agents for testing
+proxy_checker -l output.txt -r -v
 ```
 
-- With `-t` or `--timeout`, set the timeout in seconds after which the proxy is considered dead. (Default is **20**).
-- With `-p` or `--proxy`, check HTTPS, HTTP, SOCKS4, or SOCKS5 proxies. (Default is **HTTP**).
-- With `-l` or `--list`, specify the path to your proxy list file. (Default is **output.txt**).
-- With `-s` or `--site`, check proxies against a specific website like google.com. (Default is **https://google.com**).
-- With `-r` or `--random_agent`, use a random user agent per proxy.
-- With `-v` or `--verbose`, increase output verbosity.
-- With `-h` or `--help`, show the help message.
-
-### Running Directly from Source
-
-If you prefer running the scripts directly from the source code, you can use the following commands:
-
-#### For Scraping:
-
+### Step 3: Complete Workflow Example
 ```bash
-python3 proxyScraper.py -p http
+# 1. Scrape HTTP proxies
+proxy_scraper -p http -v -o output.txt
+
+# 2. Scrape HTTPS proxies
+proxy_scraper -p https -v -o output.txt
+
+# 3. Scrape SOCKS4 proxies
+proxy_scraper -p socks4 -v -o output.txt
+
+# 4. Scrape SOCKS5 proxies
+proxy_scraper -p socks5 -v -o output.txt
+
+# 5. Check HTTP proxies
+proxy_checker -l output.txt -t 15 -v
+
+# 6. Check HTTPS proxies
+proxy_checker -l output.txt -t 15 -v
+
+# 7. Check SOCKS4 proxies
+proxy_checker -l output.txt -t 15 -v
+
+# 8. Check SOCKS5 proxies
+proxy_checker -l output.txt -t 15 -v
+
+# 9. Result: output.txt contains only working proxies (for each type)
 ```
 
-#### For Checking:
+## Supported Proxy Types
+- **HTTP** - Web traffic
+- **HTTPS** - Secure web traffic  
+- **SOCKS4** - TCP connections
+- **SOCKS5** - TCP + UDP connections
 
+## Proxy Sources
+
+We collect proxies from **24 sources**:
+
+**🌐 Direct Websites (11 sources)**
+- spys.me, free-proxy-list.net, proxyscrape.com, geonode.com
+- sslproxies.org, us-proxy.org, socks-proxy.net  
+- proxy-list.download, proxyscan.io, proxyspace.pro
+- freeproxy.lunaproxy.com, more
+
+**📦 GitHub Repositories (13 sources)**  
+- proxifly/free-proxy-list, monosans/proxy-list, TheSpeedX/PROXY-List
+- jetkai/proxy-list, roosterkid/openproxylist, mmpx12/proxy-list
+- ShiftyTR/Proxy-List, clarketm/proxy-list, sunny9577/proxy-scraper
+- zloi-user/hideip.me, almroot/proxylist, aslisk/proxyhttps
+- proxy4parsing/proxy-list, more
+
+## Advanced Usage
+
+### CLI Options
+
+**Scraping:**
 ```bash
-python3 proxyChecker.py -p http -t 20 -s https://google.com -l output.txt
+proxy_scraper -p <type> [-o output.txt] [-v]
+
+Options:
+  -p, --proxy     Proxy type: http, https, socks, socks4, socks5
+  -o, --output    Output file (default: output.txt)  
+  -v, --verbose   Show detailed statistics
+  -l, --list      Input proxy file (default: output.txt)
+  -h, --help      Show this help message
+```
+
+**Checking:**
+```bash
+proxy_checker [-l input.txt] [-t timeout] [-s site] [-v]
+
+Options:
+  -l, --list      Input proxy file (default: output.txt)
+  -p, --proxy     Proxy type: http, https, socks, socks4, socks5
+  -o, --output    Output file (default: output.txt)
+  -t, --timeout   Timeout in seconds (default: 20)
+  -s, --site      Test site (default: https://google.com)
+  -r, --random_agent  Use random user agents
+  -v, --verbose   Show detailed progress
+  --max-threads  Maximum concurrent threads (default: 10)
+```
+
+### From Source Code
+```bash
+# Clone repository
+git clone https://github.com/iw4p/proxy-scraper
+cd proxy-scraper
+
+# Install dependencies  
+pip install -r requirements.txt
+
+# Run scraper
+python proxyScraper.py -p http -v
+
+# Check proxies
+python proxyChecker.py -l output.txt -v
+```
+
+## Quality & Performance
+
+- ✅ **Automatic filtering** - Removes bad IPs (Cloudflare, CDNs, private ranges)
+- 📊 **Source statistics** - See which sources provide the best proxies
+- ⚡ **Fast concurrent** - All sources scraped simultaneously
+
+
+## Example Output
+```bash
+*** Source Statistics ***
+--------------------------------------------------
+PlainTextScraper: 0 valid, 0 bad IPs, 0 invalid
+GeneralTableScraper: 0 valid, 0 bad IPs, 0 invalid
+ProxyScrapeScraper: 1666 valid, 334 bad IPs, 0 invalid
+GitHubScraper: 0 valid, 0 bad IPs, 0 invalid
+ProxyListApiScraper: 261 valid, 0 bad IPs, 0 invalid
+GeneralDivScraper: 0 valid, 0 bad IPs, 0 invalid
+SpysMeScraper: 400 valid, 0 bad IPs, 0 invalid
+
+Total filtered: 334 bad IPs (CDN/etc), 0 invalid format
+Writing 37030 unique proxies to output.txt...
+Scraping completed in 13.13 seconds
+Found 37030 unique valid proxies
+```
+
+## 🌍 Proxy Geolocation & Analysis
+
+The project includes a powerful geolocation tool to analyze proxy origins and track sources:
+
+### Features
+- **🔍 IP Geolocation** - Get country, city, ISP, and organization info
+- **☁️ CDN Detection** - Automatically identifies Cloudflare and other CDNs  
+- **🏢 Datacenter Detection** - Flags hosting providers and datacenters
+- **📊 Source Tracking** - Maps proxies back to their original sources
+- **💾 JSON Export** - Save analysis results for further processing
+
+### Usage Examples
+
+**Analyze single IP:**
+```bash
+python proxyGeolocation.py -i 104.16.1.31
+```
+
+**Analyze proxy file:**
+```bash
+python proxyGeolocation.py -f output.txt -l 50
+```
+
+**Track proxy sources:**
+```bash
+python proxyGeolocation.py -f output.txt -s --limit 100
+```
+
+**Export to JSON:**
+```bash
+python proxyGeolocation.py -f output.txt -o analysis.json
+```
+
+### Sample Output
+```bash
+🔍 Proxy Geolocation Analysis Results
+==================================================
+
+📊 Summary:
+Total proxies analyzed: 50
+Proxies with geolocation data: 45
+Cloudflare proxies: 8
+Datacenter proxies: 12
+
+🌎 Countries:
+  United States (US): 15
+  Germany (DE): 8
+  Singapore (SG): 6
+  ...
+
+📋 Detailed Results:
+────────────────────────────────────────────────────────────────
+☁️ 104.16.1.31:80 - San Francisco, United States | Cloudflare Inc.
+🌍  45.79.143.52:3128 - Tokyo, Japan | Linode LLC
+🏢  159.203.61.169:3128 - New York, United States | DigitalOcean
 ```
 
 ## Good to Know
 
 - Dead proxies will be removed, and only alive proxies will remain in the output file.
-- This script is capable of scraping SOCKS proxies, but `proxyChecker` currently only checks HTTP(S) proxies.
+- The proxy checker supports all proxy types: **HTTP, HTTPS, SOCKS4, and SOCKS5**.
+- Use random user agents (`-r` flag) for better success rates when checking proxies.
 
 ## Star History
 

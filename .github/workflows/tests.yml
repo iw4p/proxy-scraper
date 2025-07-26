@@ -15,20 +15,20 @@ jobs:
         os:
           - ubuntu-latest
         python-version:
-          - '3.7'
           - '3.8'
           - '3.9'
           - '3.10'
-          - 'pypy-3.8'
+          - '3.11'
+          - '3.12'
         include:
           - os: windows-latest
-            python-version: '3.10'
+            python-version: '3.11'
           - os: macos-latest
-            python-version: '3.10'
+            python-version: '3.11'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -41,4 +41,6 @@ jobs:
       - name: Run proxyScraper
         run: python3 proxyScraper.py -p http
       - name: Run proxyChecker
-        run: python3 proxyChecker.py -t 20 -s google.com -l output.txt
+        run: python3 proxyChecker.py -t 20 -s google.com -l output.txt --limit 10
+      - name: Run proxyGeolocation
+        run: python3 proxyGeolocation.py -i 8.8.8.8

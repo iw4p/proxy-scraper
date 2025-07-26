@@ -1,6 +1,6 @@
 [flake8]
 exclude = .git,__pycache__,env,venv,.eggs,.tox,.nox,build,dist
-max-line-lenght = 120
+max-line-length = 120
 max-complexity = 8
 ignore = W,BLK,
     E24,E121,E123,E125,E126,E221,E226,E266,E704,

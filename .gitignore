@@ -138,4 +138,54 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# PyCharm
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be added to the global gitignore or merged into this project gitignore
+.idea/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Project specific files
+.github/copilot-instructions.md
 output.txt
+test_small.txt
+test_local.py
+*.txt
+!requirements.txt
+!dev_requirements.txt
+!user_agents.txt
+!README.txt
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Backup files
+*.bak
+*.backup
+
+# IDE files
+*.sublime-project
+*.sublime-workspace
+
+# Poetry/PDM (modern Python package managers)
+poetry.lock
+.pdm.toml
